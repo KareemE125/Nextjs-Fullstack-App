@@ -1,10 +1,9 @@
 import React from 'react'
 
-import NewMeetupForm from '../../components/meetups/NewMeetupForm.js'
+import NewMeetupForm from '../components/meetups/NewMeetupForm.js'
 
-export default function NewMeetup() 
-{
-  
+export default function NewMeetup() {
+
   function addMeetup(meetupData) {
     console.log('====================================');
     console.log(meetupData);
@@ -12,8 +11,6 @@ export default function NewMeetup()
   }
 
   return <>
-    <section>
-      <NewMeetupForm addMeetup={addMeetup} />
-    </section>
+    <NewMeetupForm addMeetup={addMeetup} />
   </>
 }

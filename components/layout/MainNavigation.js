@@ -1,8 +1,10 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import classes from './MainNavigation.module.css';
 
 function MainNavigation() 
 {
+  const router = useRouter();
 
   return (
     <header className={classes.header}>
@@ -10,10 +12,10 @@ function MainNavigation()
       <nav>
         <ul>
           <li>
-            <Link to='/'>All Meetups</Link>
+            <Link style={{color: router.pathname === '/' ? 'white':'#FCB8D1'}} href='/'>All Meetups</Link>
           </li>
           <li>
-            <Link to='/new-meetup'>Add New Meetup</Link>
+            <Link style={{color: router.pathname === '/new-meetup' ? 'white':'#FCB8D1'}} href='/new-meetup'>Add New Meetup</Link>
           </li>
         </ul>
       </nav>
