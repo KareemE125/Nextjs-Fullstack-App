@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { MongoClient, ObjectId } from "mongodb";
 import Head from "next/head";
 import React from "react";
@@ -7,10 +8,10 @@ export default function MeetupDetials(props)
 {
   return <>
     <Head>
-      <title>Meetup Details</title>
+      <title>{props.details.title}</title>
       <meta
         name="description"
-        content="Relax and choose a meetup for your next hang out from an amazing meetups list"
+        content="Read all the needed deatails about a specific meetup"
       />
     </Head>
     <section className={classes.detail}>

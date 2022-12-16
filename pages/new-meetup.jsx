@@ -25,7 +25,7 @@ export default function NewMeetup() {
         <title>Add Meetup</title>
         <meta
           name="description"
-          content="Relax and choose a meetup for your next hang out from an amazing meetups list"
+          content="Add your meetup with all the needed details to be added to our amazing meetups list and shared with others"
         />
       </Head>
       <NewMeetupForm addMeetup={addMeetup} />
