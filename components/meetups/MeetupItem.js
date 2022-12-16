@@ -1,13 +1,16 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Card from '../ui/Card';
 import classes from './MeetupItem.module.css';
 
-function MeetupItem(props) 
-{
+function MeetupItem(props) {
   const router = useRouter();
-  function showDetails() 
-  {
-    router.push('/'+props.id);
+  const [isLoading, setIsLoading] = useState(false);
+
+  function showDetails() {
+    setIsLoading(true);
+    if(isLoading){return}
+    router.push('/' + props.id);
   }
 
   return (
@@ -21,7 +24,9 @@ function MeetupItem(props)
           <address>{props.address}</address>
         </div>
         <div className={classes.actions}>
-          <button onClick={showDetails}>Show Details</button>
+          <button onClick={showDetails} style={isLoading ? { backgroundColor: '#5f283d', borderColor: '#5f283d' } : {}}>
+            {isLoading ? 'Loading...' : 'Show Details'}
+          </button>
         </div>
       </Card>
     </li>

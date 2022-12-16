@@ -1,18 +1,20 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import Card from '../ui/Card';
 import classes from './NewMeetupForm.module.css';
 
-function NewMeetupForm(props) 
-{
+function NewMeetupForm(props) {
   const titleInputRef = useRef();
   const imageInputRef = useRef();
   const addressInputRef = useRef();
   const descriptionInputRef = useRef();
 
-  function submitHandler(event) {
-    event.preventDefault();
+  const [isLoading, setIsLoading] = useState(false);
 
+  async function submitHandler(event) {
+    event.preventDefault();
+    if (isLoading) { return }
+    setIsLoading(true);
     const enteredTitle = titleInputRef.current.value;
     const enteredImage = imageInputRef.current.value;
     const enteredAddress = addressInputRef.current.value;
@@ -25,7 +27,7 @@ function NewMeetupForm(props)
       description: enteredDescription,
     };
 
-    props.addMeetup(meetupData);
+    await props.addMeetup(meetupData);
   }
 
   return (
@@ -52,8 +54,10 @@ function NewMeetupForm(props)
             ref={descriptionInputRef}
           ></textarea>
         </div>
-        <div className={classes.actions}>
-          <button>Add Meetup</button>
+        <div className={classes.actions} >
+          <button style={isLoading ? { backgroundColor: '#5f283d', borderColor: '#5f283d' } : {}}>
+            {isLoading ? 'Loading...' : 'Add Meetup'}
+          </button>
         </div>
       </form>
     </Card>

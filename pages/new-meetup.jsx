@@ -1,30 +1,34 @@
-import { useRouter } from 'next/router.js';
-import React from 'react'
+import Head from "next/head.js";
+import { useRouter } from "next/router.js";
+import React from "react";
 
-import NewMeetupForm from '../components/meetups/NewMeetupForm.js'
+import NewMeetupForm from "../components/meetups/NewMeetupForm.js";
 
-export default function NewMeetup() 
-{
+export default function NewMeetup() {
   const router = useRouter();
 
-  async function addMeetup(meetupData) 
-  {
-    const response = await fetch(
-      '/api/new-meetup',
-      {
-        method: 'Post',
-        body: JSON.stringify(meetupData),
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+  async function addMeetup(meetupData) {
+    const response = await fetch("/api/new-meetup", {
+      method: "Post",
+      body: JSON.stringify(meetupData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    console.log(await response.json());
-    router.replace('/');
+    router.replace("/");
   }
 
-  return <>
-    <NewMeetupForm addMeetup={addMeetup} />
-  </>
+  return (
+    <>
+      <Head>
+        <title>Add Meetup</title>
+        <meta
+          name="description"
+          content="Relax and choose a meetup for your next hang out from an amazing meetups list"
+        />
+      </Head>
+      <NewMeetupForm addMeetup={addMeetup} />
+    </>
+  );
 }

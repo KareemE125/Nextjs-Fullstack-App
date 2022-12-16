@@ -1,52 +1,62 @@
-import React from 'react'
-import classes from '../styles/meetupDetails.module.css'
+import { MongoClient, ObjectId } from "mongodb";
+import Head from "next/head";
+import React from "react";
+import classes from "../styles/meetupDetails.module.css";
 
-
-export default function MeetupDetials(props) {
-
-
-
-  return <section className={classes.detail}>
-    <img src={props.details.image} alt='Place Image' />
-    <h1>{props.details.title}</h1>
-    <p>{props.details.description}</p>
-    <address>{props.details.address}</address>
-  </section>
+export default function MeetupDetials(props) 
+{
+  return <>
+    <Head>
+      <title>Meetup Details</title>
+      <meta
+        name="description"
+        content="Relax and choose a meetup for your next hang out from an amazing meetups list"
+      />
+    </Head>
+    <section className={classes.detail}>
+      <img src={props.details.image} alt="Place Image" />
+      <h1>{props.details.title}</h1>
+      <p>{props.details.description}</p>
+      <address>{props.details.address}</address>
+    </section>
+    </>;
 }
 
+export async function getStaticPaths() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://kareemE125:XDNbyXGBXT5jmcx2@meetupcluster.oekcire.mongodb.net/?retryWrites=true&w=majority"
+  );
 
+  const meetupsCollection = client.db("meetupDB").collection("meetups");
+  const meetupList = await meetupsCollection.find({}, { _id: 1 }).toArray();
 
-export async function getStaticPaths()
-{
+  client.close();
 
   return {
-    paths: [
-      {
-        params: { meetupId: '1000' }
-      },
-      {
-        params: { meetupId: '1001' }
-      },
-    ],
-    fallback: false
-  }
-
+    paths: meetupList.map((meetup) => ({
+      params: { meetupId: meetup._id.toString() },
+    })),
+    fallback: false,
+  };
 }
 
 export async function getStaticProps(context) {
   const id = context.params.meetupId;
 
-  
+  const client = await MongoClient.connect(
+    "mongodb+srv://kareemE125:XDNbyXGBXT5jmcx2@meetupcluster.oekcire.mongodb.net/?retryWrites=true&w=majority"
+  );
+
+  const meetupsCollection = client.db("meetupDB").collection("meetups");
+  let meetup = await meetupsCollection.findOne({ _id: ObjectId(id) });
+  meetup._id = id;
+
+  client.close();
+
   return {
     props: {
-      details: {
-        id: id,
-        title: 'meetup title',
-        image: 'https://assets.architecturaldigest.in/photos/602e4571caebc40de00b0f57/16:9/w_2560%2Cc_limit/Bali-villa-Uluwatu-SAOTA-1366x768.jpg',
-        description: 'meetup description lorem lorem lorem',
-        address: 'meetup address, 5 st. 23 appart.'
-      }
+      details: meetup,
     },
-    revalidate: 5
-  }
+    revalidate: 20,
+  };
 }
