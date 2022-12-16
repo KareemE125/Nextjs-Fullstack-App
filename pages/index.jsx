@@ -19,7 +19,8 @@ export default function HomePage(props) {
 
 // For "you can say" non-frequent updates
 // faster as caching take palce
-export async function getStaticProps() {
+export async function getStaticProps() 
+{
   const client = await MongoClient.connect(
     "mongodb+srv://kareemE125:XDNbyXGBXT5jmcx2@meetupcluster.oekcire.mongodb.net/?retryWrites=true&w=majority"
   );
